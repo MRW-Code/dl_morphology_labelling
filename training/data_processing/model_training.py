@@ -11,7 +11,7 @@ crystals = DataBlock(
     splitter= RandomSplitter(valid_pct=0.3, seed=0),
     get_y =parent_label)
 
-crystals.dataloaders(path / 'data/training_images', bs=16)
+dls = crystals.dataloaders(path / 'data/training_images', bs=16)
 
 learn = cnn_learner(dls, resnet50, metrics=[error_rate, accuracy])
 learn.fine_tune(10)

@@ -21,10 +21,13 @@ df['preds'] = preds
 
 acc = accuracy_score(true, preds)
 print(acc)
+print(df.preds.value_counts())
 
 cm = confusion_matrix(true, preds)
-disp = ConfusionMatrixDisplay(cm, display_labels=os.listdir('../../data/training_images/Images'))
+disp = ConfusionMatrixDisplay(cm, display_labels=['block', 'needle', 'plate'])
 disp.plot()
+
+plt.savefig('./ext_test_conf_mtrx.png')
 plt.show()
-# plt.savefig('./code_saves/ext_test_conf_mtrx.png')
+
 print('done')

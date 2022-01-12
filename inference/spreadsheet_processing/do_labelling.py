@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 summer = SummerData()
 df = summer.fastai_df
 
-model = load_learner('../../training/data_processing/trained_model', cpu=True)
+model = load_learner('../../training/data_processing/trained_model.pkl', cpu=True)
 
 true = []
 preds = []
@@ -22,6 +22,7 @@ df['preds'] = preds
 acc = accuracy_score(true, preds)
 print(acc)
 print(df.preds.value_counts())
+print(df.eye_morphology_clean.value_counts())
 
 cm = confusion_matrix(true, preds)
 disp = ConfusionMatrixDisplay(cm, display_labels=['block', 'needle', 'plate'])

@@ -43,14 +43,28 @@ class SummerData():
 
     def get_image_paths(self, df):
         fnames = []
+        labels = []
+        api = []
         for file in df['api']:
             base = f'../../data/water/water/{file}/'
             image = os.listdir(f'../../data/water/water/{file}')[0]
             fnames.append(f'{base}{image}')
         df['fname'] = fnames
-        return df
+        new_df = df
+
+            # for idx, _ in enumerate(os.listdir(f'../../data/water/water/{file}')):
+            #     image = os.listdir(f'../../data/water/water/{file}')[idx]
+            #     fnames.append(f'{base}{image}')
+            #     labels.append(df.eye_morphology_clean[df['api'] == file].values[0])
+            #     api.append(file)
+            # new_df = pd.DataFrame({'fname' : fnames,
+            #                    'eye_morphology_clean' : labels,
+            #                    'api' : api})
+
+        return new_df
 
     def get_fastai_df(self):
-        df = self.clean_df.drop('api', axis=1)
+        # df = self.clean_df.drop('api', axis=1)
+        df = self.clean_df
         df = df[df['eye_morphology_clean'] != 'rod']
         return df

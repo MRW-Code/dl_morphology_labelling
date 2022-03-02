@@ -1,8 +1,6 @@
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '1'
-
 from fastai.vision.all import *
-import os
 
 path = Path(os.path.dirname('../../../dl_morphology_labelling/'))
 Path.BASE_PATH = path

@@ -6,7 +6,7 @@ import os
 
 class SummerData():
     def __init__(self):
-        self.df = pd.read_csv('../../data/summer_hts_data.csv')
+        self.df = pd.read_csv('../../data/summer_hts_data_matt.csv')
         self.clean_df = self.get_clean_df()
         self.fastai_df = self.get_fastai_df()
 
@@ -39,7 +39,8 @@ class SummerData():
                                                        'crystalline',
                                                        'xray_folder',
                                                        'Unnamed: 0',
-                                                       'image_quality'], axis=1)
+                                                       'image_quality',
+                                                       'eye_morphology_old'], axis=1)
 
     def get_image_paths(self, df):
         fnames = []

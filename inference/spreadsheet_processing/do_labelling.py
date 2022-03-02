@@ -27,8 +27,8 @@ print(df.preds.value_counts())
 print(df.eye_morphology_clean.value_counts())
 
 cm = confusion_matrix(true, preds)
-# disp = ConfusionMatrixDisplay(cm, display_labels=['block', 'needle', 'plate'])
-disp = ConfusionMatrixDisplay(cm, display_labels=['needle', 'plate'])
+disp = ConfusionMatrixDisplay(cm, display_labels=['block', 'needle', 'plate'])
+# disp = ConfusionMatrixDisplay(cm, display_labels=['needle', 'plate'])
 
 disp.plot()
 

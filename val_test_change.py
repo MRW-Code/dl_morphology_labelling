@@ -29,18 +29,22 @@ def get_val_labels(path):
     df['is_valid'] = 1
     return df
 
-train_df = get_train_images('./data/training_images/Images')
+# train_df = get_train_images('./data/training_images/Images')
+# val_df = get_val_labels('./data/water')
+# model_df = pd.concat([train_df, val_df], axis=0)
+
 val_df = get_val_labels('./data/water')
-model_df = pd.concat([train_df, val_df], axis=0)
+
 print(model_df.head(), model_df.shape)
 tfms = None
 dls = ImageDataLoaders.from_df(model_df,
                                fn_col=0,
                                label_col=1,
-                               valid_col=2,
-                               batch_tfms=tfms)
+                               val_pct=0.33,
+                               batch_tfms=tfms,
+                               bs=32)
 
-learn = cnn_learner(dls, resnet50, metrics=[error_rate, accuracy, F1Score])
+learn = cnn_learner(dls, resnet50, metrics=[error_rate, accuracy])
 learn.fine_tune(20, cbs=[SaveModelCallback(fname='./best_cbs_100'),
                                   ReduceLROnPlateau(monitor='valid_loss',
                                                     min_delta=0.1,

@@ -50,7 +50,9 @@ class SummerData():
             base = f'../../data/water/water/{file}/'
             image = os.listdir(f'../../data/water/water/{file}')[0]
             fnames.append(f'{base}{image}')
+            labels.append(self.df.eye_morphology[self.df['api'] == file].values[0])
         df['fname'] = fnames
+        df['mulit_label'] = labels
         new_df = df
 
             # for idx, _ in enumerate(os.listdir(f'../../data/water/water/{file}')):

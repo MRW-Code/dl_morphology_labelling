@@ -9,14 +9,18 @@ import pandas as pd
 
 summer = SummerData()
 df = summer.fastai_df
-
+multi = True
 model = load_learner('../../training/data_processing/trained_model.pkl', cpu=True)
 
 true = []
 preds = []
 for idx, path in enumerate(tqdm(df['fname'])):
     img = torch.tensor(cv2.imread(path)).cpu()
-    true.append(df.eye_morphology_clean.values[idx])
+    if multi:
+        true.append(df.multilabel.values[idx])
+    else:
+        true.append(df.eye_morphology_clean.values[idx])
+
     preds.append(model.predict(img)[0].lower())
 df['preds'] = preds
 df.to_csv('test.csv')

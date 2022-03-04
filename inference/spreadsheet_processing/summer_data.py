@@ -82,5 +82,8 @@ class SummerData():
     def get_fastai_df(self):
         # df = self.clean_df.drop('api', axis=1)
         df = self.clean_df
-        df = df[df['eye_morphology_clean'] != 'rod']
+        if self.multi:
+            df = df[df['labels'] != 'rod']
+        else:
+            df = df[df['eye_morphology_clean'] != 'rod']
         return df

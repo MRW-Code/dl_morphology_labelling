@@ -17,7 +17,7 @@ preds = []
 for idx, path in enumerate(tqdm(df['fname'])):
     img = torch.tensor(cv2.imread(path)).cpu()
     if multi:
-        true.append(df.multilabel.values[idx])
+        true.append(df.multi_label.values[idx])
     else:
         true.append(df.eye_morphology_clean.values[idx])
 

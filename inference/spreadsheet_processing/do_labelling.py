@@ -11,14 +11,14 @@ multi = True
 summer = SummerData(multi=multi)
 df = summer.fastai_df
 
-model = load_learner('../../training/data_processing/trained_model.pkl', cpu=True)
+model = load_learner('../../training/data_processing/trained_model.pkl', cpu=False)
 
 true = []
 preds = []
 for idx, path in enumerate(tqdm(df['fname'])):
     img = torch.tensor(cv2.imread(path)).cpu()
     if multi:
-        true.append(df.multi_label.values[idx])
+        true.append(df.labels.values[idx])
     else:
         true.append(df.eye_morphology_clean.values[idx])
 

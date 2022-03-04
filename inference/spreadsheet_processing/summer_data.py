@@ -5,7 +5,8 @@ import os
 
 
 class SummerData():
-    def __init__(self):
+    def __init__(self, multi):
+        self.multi = multi
         self.df = pd.read_csv('../../data/summer_hts_data_matt.csv')
         self.clean_df = self.get_clean_df()
         self.fastai_df = self.get_fastai_df()
@@ -48,11 +49,23 @@ class SummerData():
         api = []
         for file in df['api']:
             base = f'../../data/water/water/{file}/'
-            image = os.listdir(f'../../data/water/water/{file}')[0]
-            fnames.append(f'{base}{image}')
-            labels.append(self.df.eye_morphology[self.df['api'] == file].values[0])
-        df['fname'] = fnames
-        df['multi_label'] = labels
+            if self.multi:
+                image = os.listdir(f'../../data/water/water/{file}')
+                for img in image:
+                    fnames.append(f'{base}{img}')
+                    labels.append(self.df.eye_morphology[self.df['api'] == file].values[0])
+                    api.append(file)
+            else:
+                image = os.listdir(f'../../data/water/water/{file}')[0]
+                fnames.append(f'{base}{image}')
+        if self.multi:
+            df = pd.DataFrame({'fname' : fnames,
+                               'labels' : labels,
+                               'api' : api})
+        else:
+            df['fname'] = fnames
+            df['multi_label'] = labels
+
         new_df = df
 
             # for idx, _ in enumerate(os.listdir(f'../../data/water/water/{file}')):

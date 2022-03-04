@@ -7,9 +7,9 @@ from sklearn.metrics import accuracy_score, ConfusionMatrixDisplay, confusion_ma
 import matplotlib.pyplot as plt
 import pandas as pd
 
-summer = SummerData()
+summer = SummerData(multi=True)
 df = summer.fastai_df
-multi = True
+
 model = load_learner('../../training/data_processing/trained_model.pkl', cpu=True)
 
 true = []

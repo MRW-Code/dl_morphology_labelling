@@ -1,5 +1,5 @@
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+os.environ['CUDA_VISIBLE_DEVICES'] = '2'
 from fastai.vision.all import *
 import pandas as pd
 from sklearn.model_selection import KFold

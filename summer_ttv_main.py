@@ -53,7 +53,7 @@ def train_model(model_df, num_model):
 if __name__ == '__main__':
     ref_df = get_df()
     api_list = ref_df.api.value_counts().index
-    kfold = KFold(n_splits=5, random_state=0)
+    kfold = KFold(n_splits=5)
 
     split_idx = 0
     final_acc = {}

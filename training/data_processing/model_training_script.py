@@ -41,5 +41,7 @@ learn.fine_tune(20, cbs=[SaveModelCallback(fname='./best_cbs_100'),
 
 learn.export('./trained_model.pkl')
 
+learn.recorder.plot_loss()
+plt.savefig('./training_plot.png')
 # print(path.ls())
 

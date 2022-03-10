@@ -62,13 +62,17 @@ if __name__ == '__main__':
 
     split_idx = 0
     final_acc = []
+    val_acc = []
     for train, test in kfold.split(api_list):
         train_df = ref_df[ref_df['api'].isin(api_list[train])]
         test_df = ref_df[ref_df['api'].isin(api_list[test])]
 
         trainer = train_model(train_df, split_idx)
 
-        model = load_learner(f'./trained_model_val_test_{split_idx}.pkl', cpu=False)
+        model = load_learner(f'./trained_model_val_test_{split_idx}.pkl', cpu=True)
+        #get best val acc
+        val_acc.append(model.final_record[3])
+
         true = []
         preds = []
         for idx, path in enumerate(test_df['fname']):
@@ -79,8 +83,9 @@ if __name__ == '__main__':
         final_acc.append(acc)
         split_idx = split_idx + 1
         torch.cuda.empty_cache()
-
-    print(final_acc)
+    print(f'Val Acc Values: {val_acc}')
+    print(f'Test Acc Values: {final_acc}')
+    print(f'Mean Val Acc = {np.mean(val_acc)}')
     print(f'Mean Test Acc = {np.mean(final_acc)}')
     print('done')
 

@@ -1,5 +1,5 @@
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '2'
+os.environ['CUDA_VISIBLE_DEVICES'] = '3'
 from fastai.vision.all import *
 import pandas as pd
 from sklearn.model_selection import KFold
@@ -7,6 +7,7 @@ import random
 from sklearn.metrics import accuracy_score
 import cv2
 import torch
+import numpy as np
 
 path = Path(os.path.dirname('./'))
 Path.BASE_PATH = path
@@ -30,16 +31,18 @@ def get_df():
 
 def train_model(model_df, num_model):
     # print(model_df.head(20), model_df.shape)
-    tfms = Resize((480, 640))
+    tfms_item = Resize((480, 640))
+    tfms_bat = aug_transforms(pad_mode='zeros', mult=2, min_scale=0.5)
     dls = ImageDataLoaders.from_df(model_df,
                                    fn_col=1,
                                    label_col=2,
-                                   valid_pct=0.33,
-                                   item_tfms=tfms,
+                                   valid_pct=0.2,
+                                   item_tfms=tfms_item,
+                                   batch_tfms=tfms_bat,
                                    bs=32)
 
     learn = cnn_learner(dls, resnet18, metrics=[error_rate, accuracy])
-    learn.fine_tune(5, cbs=[SaveModelCallback(fname=f'./best_cbs_{num_model}'),
+    learn.fine_tune(50, cbs=[SaveModelCallback(fname=f'./best_cbs_{num_model}'),
                             ReduceLROnPlateau(monitor='valid_loss',
                                               min_delta=0.1,
                                               patience=2)])
@@ -55,7 +58,7 @@ def train_model(model_df, num_model):
 if __name__ == '__main__':
     ref_df = get_df()
     api_list = ref_df.api.value_counts().index
-    kfold = KFold(n_splits=4)
+    kfold = KFold(n_splits=25)
 
     split_idx = 0
     final_acc = []
@@ -78,4 +81,6 @@ if __name__ == '__main__':
         torch.cuda.empty_cache()
 
     print(final_acc)
+    print(f'Mean Test Acc = {np.mean(final_acc)}')
     print('done')
+
